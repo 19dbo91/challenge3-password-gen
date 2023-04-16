@@ -98,8 +98,8 @@ button[disabled] {
 }
 
 #password {
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  -webkit-appearance: none; /* TODO: look up efffect*/
+  -moz-appearance: none;  /* TODO: look up efffect*/
   appearance: none;
   border: none;
   display: block;

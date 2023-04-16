@@ -2,7 +2,7 @@
 
 ## Description
 
-The objective of this project is to generate a unique password based on the specifications selected by the end user. This is a slightly better alternative to making up passwords yourself. 
+The objective of this project is modify starter code to generate a unique password based on the specifications selected by the end user. This is a slightly better alternative to making up passwords yourself. 
 
 Lessons learned:
 
