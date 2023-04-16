@@ -15,21 +15,59 @@ generateBtn.addEventListener("click", writePassword); //  What does this mean?  
 
 
 //Start of my code
+const askPasswordLength ="Please enter the length of your new password. \n The length must be between 8 and 128 characters long.";
+const alertTryAgain="Please click Generate Password to try again.";
+const minCharLen = 8;
+const maxCharLen = 128;
+
 function generatePassword() {
-  // TODO: "Prompt" for length
-
-  // TODO: "Prompt" for character types to include at least one of the following: [lowercase, uppercase, numeric, and/or special characters]
-
-  // TODO: "Return" the "string" for new password
-
-
+  let length = getPasswordLength();
+  console.log(length);
+  setPasswordCriteria();
+  return getRandomPassword(length); 
 }
 
-/*
-WHEN all prompts are answered
- - THEN a password is generated that matches the selected criteria
+function getPasswordLength(){ 
+  let length = prompt(askPasswordLength, minCharLen);
+  if (length < minCharLen || length > maxCharLen){
+    alert(`You have entered ${length} for the password length. \n${alertTryAgain}`);
+    return;
+  };
+  return length;
+}
 
-WHEN the password is generated
- - THEN the password is either displayed in an alert or written to the page
+function setPasswordCriteria(){
+  //TODO: prompt user for the following - must have one:
+  let lowercase, uppercase, numeric, specials;
+}
 
+function getRandomPassword(length){ // TODO: randomize string based on length and criteria
+  let randomizedString;
+  for (let i=1;i<length;i++){
+    randomizedString += randomChar(); 
+  }
+  return randomizedString;
+}
+
+function randomChar(){
+  return randomCharacter;
+}
+
+/* Backlog of Acceptance Criteria
+* WHEN all prompts are answered
+* - THEN a password is generated that matches the selected criteria
+*
+* WHEN the password is generated
+* - THEN the password is either displayed in an //! alert or written to the page
+*/
+
+/* References so far...
+* Newline Char <https://www.baeldung.com/java-string-newline> worked in js as well
+* prompts <https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt>
+* 
+*/ 
+
+/* Ascii
+*
+*
 */
