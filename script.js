@@ -17,12 +17,15 @@ generateBtn.addEventListener("click", writePassword); //  What does this mean?  
 //Start of my code
 const askPasswordLength ="Please enter the length of your new password. \n The length must be between 8 and 128 characters long.";
 const alertTryAgain="Please click Generate Password to try again.";
+const askInclusion= "Would you like to include:\n";
 const minCharLen = 8;
 const maxCharLen = 128;
+let lowercase, uppercase, numbers, specials;
 
 function generatePassword() {
   let length = getPasswordLength();
   console.log(length);
+  if(!length){return;}
   setPasswordCriteria();
   return getRandomPassword(length); 
 }
@@ -32,14 +35,32 @@ function getPasswordLength(){
   if (length < minCharLen || length > maxCharLen){
     alert(`You have entered ${length} for the password length. \n${alertTryAgain}`);
     return;
-  };
+  }; //TODO: Issue with non-numeric input
   return length;
 }
 
 function setPasswordCriteria(){
   //TODO: prompt user for the following - must have one:
-  let lowercase, uppercase, numeric, specials;
+  lowercase = confirm(`${askInclusion} Lower Case`);
+  console.log(getRandomNum(3));
+  uppercase = confirm(`${askInclusion} Upper Case`);
+  console.log(getRandomNum(3));
+  numbers = confirm(`${askInclusion} Numbers`);
+  console.log(getRandomNum(4));
+  specials = confirm(`${askInclusion} Special Characters`);
+  console.log(getRandomNum(5));
+
+  let wasTypeChosen = lowercase || uppercase || numbers || specials;
+  if (!wasTypeChosen){ 
+    console.log(wasTypeChosen);
+  }
 }
+
+function getRandomNum(min,maxExcluded){
+  return Math.floor(Math.random()*(maxExcluded-min) + min); // !Reminder: Random()=> [0,1); in other words 1 is excluded
+}
+
+function getASCII(){return;}
 
 function getRandomPassword(length){ // TODO: randomize string based on length and criteria
   let randomizedString;
@@ -49,9 +70,7 @@ function getRandomPassword(length){ // TODO: randomize string based on length an
   return randomizedString;
 }
 
-function randomChar(){
-  return randomCharacter;
-}
+
 
 /* Backlog of Acceptance Criteria
 * WHEN all prompts are answered
@@ -64,7 +83,8 @@ function randomChar(){
 /* References so far...
 * Newline Char <https://www.baeldung.com/java-string-newline> worked in js as well
 * prompts <https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt>
-* 
+* interval notation <https://www.math.utah.edu/online/1010/intervals/#:~:text=The%20notation%20may%20be%20a,round%20parentheses%20mean%20it's%20excluded.>
+* random <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random>
 */ 
 
 /* Ascii
