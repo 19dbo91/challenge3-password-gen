@@ -16,11 +16,17 @@ generateBtn.addEventListener("click", writePassword); //  What does this mean?  
 
 //Start of my code
 const askPasswordLength ="Please enter the length of your new password. \n The length must be between 8 and 128 characters long.";
-const alertTryAgain="Please click Generate Password to try again.";
 const askInclusion= "Would you like to include:\n";
+let alertMsg=[];
+alertMsg[0]="Please click Generate Password to try again.";
+alertMsg[1]="Missing at least ONE type of characters."
+
 const minCharLen = 8;
 const maxCharLen = 128;
-let lowercase, uppercase, numbers, specials;
+let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"];
+let responseCharTypes=[];
+
+//let lowercase, uppercase, numbers, specials;
 
 function generatePassword() {
   let length = getPasswordLength();
@@ -33,7 +39,7 @@ function generatePassword() {
 function getPasswordLength(){ 
   let length = prompt(askPasswordLength, minCharLen);
   if (length < minCharLen || length > maxCharLen){
-    alert(`You have entered ${length} for the password length. \n${alertTryAgain}`);
+    alert(`You have entered ${length} for the password length. \n${alertMsg[0]}`);
     return;
   }; //TODO: Issue with non-numeric input
   return length;
@@ -41,15 +47,35 @@ function getPasswordLength(){
 
 function setPasswordCriteria(){
   //TODO: prompt user for the following - must have one:
-  lowercase = confirm(`${askInclusion} Lower Case`);
+  for (let i = 0; i < charTypes.length ;i++){
+    responseCharTypes[i]= confirm(`${askInclusion} ${charTypes[i]}`)
+    console.log(charTypes[i]);console.log(responseCharTypes[i]); // ! debug: omit on live
+
+    //checking for at least one response
+  };
+  
+  /*lowercase = confirm(`${askInclusion} Lower Case`); //replacing
   uppercase = confirm(`${askInclusion} Upper Case`);
   numbers = confirm(`${askInclusion} Numbers`);
   specials = confirm(`${askInclusion} Special Characters`);
-
-  let wasTypeChosen = lowercase || uppercase || numbers || specials;
+  */
+  console.log(responseCharTypes); // ! debug: omit on live
+  /*
+  let wasTypeChosen = lowercase || uppercase || numbers || specials; //replacing
   if (!wasTypeChosen){ 
-    console.log(wasTypeChosen);
+    alert(`${alertMsg[1]}\n${alertMsg[0]}`);
+  }*/
+
+  wasTypeChosen();
+}
+
+function wasTypeChosen(){
+  let chosenOne;
+  for (let i = 0; i < responseCharTypes.length ; i++){
+    chosenOne = chosenOne || responseCharTypes[i];
+    console.log(chosenOne); // ! debug: omit on live
   }
+  return chosenOne;
 }
 
 /* Wrapped functions */
