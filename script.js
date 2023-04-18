@@ -20,17 +20,17 @@ const askInclusion= "Would you like to include:\n";
 let alertMsg=[];
 alertMsg[0]="Please click Generate Password to try again.";
 alertMsg[1]="Missing at least ONE type of characters."
+alertMsg[2]="Length is out of bounds. You have entered a length of";
 
 const minCharLen = 8;
 const maxCharLen = 128;
 let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"];
-let responseCharTypes=[];
+let responseCharTypes=[]; //stores user input for including character type
 
 //let lowercase, uppercase, numbers, specials;
 
 function generatePassword() {
-  let length = getPasswordLength();
-  console.log(length);
+  let length = getPasswordLength(); //console.log(length); // ! debug: omit on live  
   if(!length){return;}
   setPasswordCriteria();
   return getRandomPassword(length); 
@@ -38,10 +38,10 @@ function generatePassword() {
 
 function getPasswordLength(){ 
   let length = prompt(askPasswordLength, minCharLen);
-  if (length < minCharLen || length > maxCharLen){
-    alert(`You have entered ${length} for the password length. \n${alertMsg[0]}`);
+  if (length < minCharLen || length > maxCharLen){    // TODO: handle case with non-numeric input
+    alert(`${alertMsg[2]} ${length}.\n${alertMsg[0]}`);
     return;
-  }; //TODO: Issue with non-numeric input
+  };
   return length;
 }
 
@@ -49,52 +49,45 @@ function setPasswordCriteria(){
   //TODO: prompt user for the following - must have one:
   for (let i = 0; i < charTypes.length ;i++){
     responseCharTypes[i]= confirm(`${askInclusion} ${charTypes[i]}`)
-    console.log(charTypes[i]);console.log(responseCharTypes[i]); // ! debug: omit on live
-
-    //checking for at least one response
-  };
-  
-  /*lowercase = confirm(`${askInclusion} Lower Case`); //replacing
-  uppercase = confirm(`${askInclusion} Upper Case`);
-  numbers = confirm(`${askInclusion} Numbers`);
-  specials = confirm(`${askInclusion} Special Characters`);
-  */
-  console.log(responseCharTypes); // ! debug: omit on live
-  /*
-  let wasTypeChosen = lowercase || uppercase || numbers || specials; //replacing
-  if (!wasTypeChosen){ 
+    //console.log(charTypes[i]);console.log(responseCharTypes[i]); // ! debug: omit on live
+  }; 
+  //console.log(responseCharTypes); // ! debug: omit on live  
+  if (!wasTypeChosen()){ 
     alert(`${alertMsg[1]}\n${alertMsg[0]}`);
-  }*/
-
-  wasTypeChosen();
+  }
 }
 
 function wasTypeChosen(){
   let chosenOne;
   for (let i = 0; i < responseCharTypes.length ; i++){
-    chosenOne = chosenOne || responseCharTypes[i];
-    console.log(chosenOne); // ! debug: omit on live
+    chosenOne = chosenOne || responseCharTypes[i];  
+    //console.log(chosenOne); // ! debug: omit on live
   }
   return chosenOne;
-}
+}// returns false if all options skipped;
 
-/* Wrapped functions */
+/* Wrapped functions for easier read */
 function getRandomNum(min,maxExcluded){
   return Math.floor(Math.random()*(maxExcluded-min) + min); // !Reminder: Random()=> [0,1); in other words 1 is excluded
 }
-function getASCIIFor(integer){
-  return String.fromCharCode(integer); // .charCodeAt is the inverse
+function getASCII(number){
+  return String.fromCharCode(number); // .charCodeAt is the inverse
 }
 
 function getRandomPassword(length){ // TODO: randomize string based on length and criteria
   let randomizedString;
-  for (let i=1;i<length;i++){
-    randomizedString += randomChar(); 
+  for (let i=0;i<length;i++){
+    let rChar = getRandomNum();
+    console.log(rChar);
+    randomizedString += getASCII(rChar); 
+    console.log(randomizedString);
   }
   return randomizedString;
 }
 
-
+function chooseType(){
+}
+function chooseChar(){}
 
 /* Backlog of Acceptance Criteria
 * WHEN all prompts are answered
