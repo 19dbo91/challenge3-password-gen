@@ -20,7 +20,7 @@ None.
 
 ## Usage
 
-- In your preferred browser, open URL: <deployed-url-here>
+- In your preferred browser, open URL: <https://19dbo91.github.io/challenge3-password-gen/>
 - Click the button to generate a password
 
 You will be presented with a series of prompts for password criteria
@@ -46,6 +46,8 @@ Starter code: UCI BootCamp
 Referenced Links:
 
 - <https://www.ascii-code.com/>
+- <https://www.w3schools.com/>
+- <https://developer.mozilla.org/en-US/docs/Web/>
 
 ## Features
 
