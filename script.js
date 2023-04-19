@@ -14,13 +14,12 @@ function writePassword() {
 generateBtn.addEventListener("click", writePassword); //  What does this mean?  // ! The button (with identity "generate") is now attached with a listener for an occurence "click" and then execute writePassword
 
 
-//Start of my code
-
+//Begin Challenge 3
 /* String Declarations */
 const askPasswordLength ="Please enter the length of your new password. \n The length MUST be between 8 and 128 characters long.";
 const askInclusion= "Please press \"OK\" to include characters that are :\n";
 let alertMsg=[];
-alertMsg[0]="Please click Generate Password to try again.";
+alertMsg[0]="Please click \"Generate Password\" to try again.";
 alertMsg[1]="Missing at least ONE type of characters."
 alertMsg[2]="Length is out of bounds. You have entered a length of";
 
@@ -28,12 +27,13 @@ alertMsg[2]="Length is out of bounds. You have entered a length of";
 const minCharLen = 8;
 const maxCharLen = 128;
 
-/* Character Type Declarations */
-function CharType(newType, newRange){
-  this.type = newType; // expecting STRING for name of character type
-  this.range=newRange; // expecting min and max INTEGERS, or list of ranges for ascii
+/* Class: CharacterType */
+class CharType {
+  constructor(newType, newRange) {
+    this.type = newType; // expecting STRING for name of character type
+    this.range = newRange; // expecting min and max INTEGERS, or list of ranges for ascii
+  }
 };
-
 let selectedTypes, charTypes=[];
 charTypes[0]= new CharType("Lower Case", [97, 122]);
 charTypes[1]= new CharType("Upper Case", [65, 90]);
@@ -48,16 +48,14 @@ function generatePassword() {
   return getRandomPassword(length); 
 }
 
-/* */
 function getPasswordLength(){ 
   let length = prompt(askPasswordLength, minCharLen);
-  if (length < minCharLen || length > maxCharLen){    // TODO: handle case with non-numeric input
+  if (length < minCharLen || length > maxCharLen){    
     alert(`${alertMsg[2]} ${length}.\n${alertMsg[0]}`);
     return;
   };
   return length;
-}
-
+}// TODO: handle case with non-numeric input
 function setPasswordCriteria(){
   selectedTypes=[];
   charTypes.forEach(element => {
@@ -72,14 +70,14 @@ function setPasswordCriteria(){
 
 /* Wrapped functions for easier read */
 function getRandomNum(min,maxExcluded){
-  return Math.floor(Math.random()*(maxExcluded-min) + min); // !Reminder: Random()=> [0,1); in other words 1 is excluded
-} //returns NUM from parameter MIN to MAX(excluded)
+  return Math.floor(Math.random()*(maxExcluded-min) + min);
+} //returns NUM, chosen at random between parameter NUM minimum (inclusive) and NUM maximum (exclusive)
 function getASCII(number){
   return String.fromCharCode(number); // .charCodeAt is the inverse
 } //returns CHAR converted from parameter NUMBER
 
 function chooseType(arrayOfTypes){
-  let num = getRandomNum(0,arrayOfTypes.length); //console.log(`From the set of ${arrayOfTypes[num].type}`);
+  let num = getRandomNum(0,arrayOfTypes.length); // *console.log(`From the set of ${arrayOfTypes[num].type},`);
   return arrayOfTypes[num];
 } //returns OBJECT CharType, chosen at random from parameter ARRAY
 
@@ -92,16 +90,16 @@ function chooseChar(chosenType){
     let specialRange=chosenType.range;
     let subRange = getRandomNum(0, specialRange.length);
     let minSpecial = specialRange[subRange][0];
-    let maxSpecial = specialRange[subRange][1]; console.log(`expecting sub range for${minSpecial} thru ${maxSpecial}`);
+    let maxSpecial = specialRange[subRange][1]; // *console.log(`looking at subset #${subRange} for ${minSpecial} thru ${maxSpecial}`);
     return getRandomNum(minSpecial, maxSpecial);
   }
-} //returns NUM (ASCII code), chosen at random based parameter OBJECT Type 
+} //returns NUM (ASCII code), chosen at random based parameter OBJECT CharType 
 
 function getRandomPassword(length){
   let randomizedPassword="";
   for(let i = 0;i<length;i++){
-    let randNumASCII = chooseChar(chooseType(selectedTypes)); //console.log(`we got ascii code ${randNumASCII}`);
-    let randCharASCII= getASCII(randNumASCII); //console.log(`and converted it to "${randCharASCII}" character`);
+    let randNumASCII = chooseChar(chooseType(selectedTypes)); // *console.log(`we pulled ascii code ${randNumASCII}`);
+    let randCharASCII= getASCII(randNumASCII); // *console.log(`and converted it to "${randCharASCII}" character`);
     randomizedPassword += randCharASCII;
   }
   return randomizedPassword;
@@ -114,15 +112,12 @@ function getRandomPassword(length){
 * - THEN the password is either displayed in an //! alert or written to the page
 */
 
-/* References so far...
+/* References:
 * Newline Char <https://www.baeldung.com/java-string-newline> worked in js as well
 * prompts <https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt>
 * interval notation <https://www.math.utah.edu/online/1010/intervals/#:~:text=The%20notation%20may%20be%20a,round%20parentheses%20mean%20it's%20excluded.>
 * random <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random>
 * ascii <https://www.w3schools.com/charsets/ref_html_ascii.asp>
-*/
-
-/* Ascii
-*
-*
+* class <https://www.w3schools.com/js/js_classes.asp>; VS code quickfixed my code about how function can be overridden, so it auto gen class
+* 
 */
