@@ -15,17 +15,20 @@ generateBtn.addEventListener("click", writePassword); //  What does this mean?  
 
 
 //Start of my code
-const askPasswordLength ="Please enter the length of your new password. \n The length must be between 8 and 128 characters long.";
-const askInclusion= "Would you like to include:\n";
+
+/* String Declarations */
+const askPasswordLength ="Please enter the length of your new password. \n The length MUST be between 8 and 128 characters long.";
+const askInclusion= "Please press \"OK\" to include characters that are :\n";
 let alertMsg=[];
 alertMsg[0]="Please click Generate Password to try again.";
 alertMsg[1]="Missing at least ONE type of characters."
 alertMsg[2]="Length is out of bounds. You have entered a length of";
 
+/* Password Length */
 const minCharLen = 8;
 const maxCharLen = 128;
-// let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"]; //TODO: switch to an array of objects? object w/ type,response,range
 
+/* Character Type Declarations */
 function CharType(newType, newRange){
   this.type = newType; // expecting STRING for name of character type
   this.range=newRange; // expecting min and max INTEGERS, or list of ranges for ascii
@@ -37,21 +40,15 @@ charTypes[1]= new CharType("Upper Case", [65, 90]);
 charTypes[2]= new CharType("Numbers", [48, 57]);
 charTypes[3]= new CharType("Special Characters",[[33, 47], [58,64], [91, 96], [123, 126]]); //excluding: 32(space) 127(delete)
 
-console.log(charTypes[0].range[0]);
-console.log(charTypes[1].range[1]);
-console.log(charTypes[2].range[0]);
-console.log(charTypes[3].range[0][1]);
-
-
-//let responseCharTypes=[]; //stores user input for including character type
-
+/* Base Function */
 function generatePassword() {
-  let length = getPasswordLength(); //console.log(length); // ! debug: omit on live  
+  let length = getPasswordLength();
   if(!length){return;}
   setPasswordCriteria();
   return getRandomPassword(length); 
 }
 
+/* */
 function getPasswordLength(){ 
   let length = prompt(askPasswordLength, minCharLen);
   if (length < minCharLen || length > maxCharLen){    // TODO: handle case with non-numeric input
@@ -62,7 +59,7 @@ function getPasswordLength(){
 }
 
 function setPasswordCriteria(){
-  selectedTypes=[]; //resets on click
+  selectedTypes=[];
   charTypes.forEach(element => {
     if (confirm(`${askInclusion} ${element.type}`)){
       selectedTypes.push(element);
@@ -76,47 +73,43 @@ function setPasswordCriteria(){
 /* Wrapped functions for easier read */
 function getRandomNum(min,maxExcluded){
   return Math.floor(Math.random()*(maxExcluded-min) + min); // !Reminder: Random()=> [0,1); in other words 1 is excluded
-}
+} //returns NUM from parameter MIN to MAX(excluded)
 function getASCII(number){
   return String.fromCharCode(number); // .charCodeAt is the inverse
-}
+} //returns CHAR converted from parameter NUMBER
 
 function chooseType(arrayOfTypes){
-  let num = getRandomNum(0,arrayOfTypes.length);
-  console.log(arrayOfTypes[num].type);
+  let num = getRandomNum(0,arrayOfTypes.length); //console.log(`From the set of ${arrayOfTypes[num].type}`);
   return arrayOfTypes[num];
-} //returns Type object from array
+} //returns OBJECT CharType, chosen at random from parameter ARRAY
 
 function chooseChar(chosenType){
-  
-  if (chooseType.type!="Special Characters"){
+  if (chosenType.type!="Special Characters"){
     let min = chosenType.range[0];
     let max = chosenType.range[1];
     return getRandomNum(min,max);
-  }else{
-    console.log(getRandomNum(0, chosenType.range.length));
+  }else{//Special Characters have a disjointed/noncontiguous set (see above: charTypes[3])
+    let specialRange=chosenType.range;
+    let subRange = getRandomNum(0, specialRange.length);
+    let minSpecial = specialRange[subRange][0];
+    let maxSpecial = specialRange[subRange][1]; console.log(`expecting sub range for${minSpecial} thru ${maxSpecial}`);
+    return getRandomNum(minSpecial, maxSpecial);
   }
-}
+} //returns NUM (ASCII code), chosen at random based parameter OBJECT Type 
 
-function getRandomPassword(length){ // TODO: randomize string based on length and criteria
+function getRandomPassword(length){
   let randomizedPassword="";
   for(let i = 0;i<length;i++){
-    console.log(selectedTypes);
-    let randNumASCII = chooseChar(chooseType(selectedTypes)); console.log(randNumASCII);
-    let randCharASCII= getASCII(randNumASCII); console.log(randCharASCII);
+    let randNumASCII = chooseChar(chooseType(selectedTypes)); //console.log(`we got ascii code ${randNumASCII}`);
+    let randCharASCII= getASCII(randNumASCII); //console.log(`and converted it to "${randCharASCII}" character`);
     randomizedPassword += randCharASCII;
-    console.log(randomizedPassword);
   }
-
   return randomizedPassword;
-}
+}// returns STRING of size parameter NUM length
 
 
 
 /* Backlog of Acceptance Criteria
-* WHEN all prompts are answered
-* - THEN a password is generated that matches the selected criteria
-*
 * WHEN the password is generated
 * - THEN the password is either displayed in an //! alert or written to the page
 */
@@ -126,7 +119,7 @@ function getRandomPassword(length){ // TODO: randomize string based on length an
 * prompts <https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt>
 * interval notation <https://www.math.utah.edu/online/1010/intervals/#:~:text=The%20notation%20may%20be%20a,round%20parentheses%20mean%20it's%20excluded.>
 * random <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random>
-* 
+* ascii <https://www.w3schools.com/charsets/ref_html_ascii.asp>
 */
 
 /* Ascii
