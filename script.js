@@ -24,10 +24,27 @@ alertMsg[2]="Length is out of bounds. You have entered a length of";
 
 const minCharLen = 8;
 const maxCharLen = 128;
-let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"]; //TODO: switch to an array of objects? object w/ type,response,range
-let responseCharTypes=[]; //stores user input for including character type
+// let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"]; //TODO: switch to an array of objects? object w/ type,response,range
 
-//let lowercase, uppercase, numbers, specials;
+function CharType(newType, newRange){
+  this.type = newType; // expecting STRING for name of character type
+  this.range=newRange; // expecting min and max INTEGERS, or list of ranges for ascii
+  this.isActive=false; // user will affect this at runtime
+};
+
+let selectedTypes, charTypes=[];
+charTypes[0]= new CharType("Lower Case", [97, 122]);
+charTypes[1]= new CharType("Upper Case", [65, 90]);
+charTypes[2]= new CharType("Numbers", [48, 57]);
+charTypes[3]= new CharType("Special Characters",[[33, 47], [58,64], [91, 96], [123, 126]]); //excluding: 32(space) 127(delete)
+
+console.log(charTypes[0].range[0]);
+console.log(charTypes[1].range[1]);
+console.log(charTypes[2].range[0]);
+console.log(charTypes[3].range[0][1]);
+
+
+//let responseCharTypes=[]; //stores user input for including character type
 
 function generatePassword() {
   let length = getPasswordLength(); //console.log(length); // ! debug: omit on live  
@@ -46,25 +63,25 @@ function getPasswordLength(){
 }
 
 function setPasswordCriteria(){
-  //TODO: prompt user for the following - must have one:
-  for (let i = 0; i < charTypes.length ;i++){
-    responseCharTypes[i]= confirm(`${askInclusion} ${charTypes[i]}`)
-    //console.log(charTypes[i]);console.log(responseCharTypes[i]); // ! debug: omit on live
-  }; 
-  //console.log(responseCharTypes); // ! debug: omit on live  
-  if (!wasTypeChosen()){ 
+  selectedTypes=[];//resets on click
+  charTypes.forEach(element => {
+    if (confirm(`${askInclusion} ${element.type}`)){
+      selectedTypes.push(element);
+    }
+  });
+  if (selectedTypes.length<=0){ 
     alert(`${alertMsg[1]}\n${alertMsg[0]}`);
   }
 }
 
 function wasTypeChosen(){
   let chosenOne;
-  for (let i = 0; i < responseCharTypes.length ; i++){
-    chosenOne = chosenOne || responseCharTypes[i];  
+  for (let i = 0; i < charTypes.length ; i++){
+    chosenOne = chosenOne || charTypes[i].isActive;  
     //console.log(chosenOne); // ! debug: omit on live
   }
   return chosenOne;
-}// returns false if all options skipped;
+}// returns false if all criteria skipped;
 
 /* Wrapped functions for easier read */
 function getRandomNum(min,maxExcluded){
@@ -75,14 +92,14 @@ function getASCII(number){
 }
 
 function getRandomPassword(length){ // TODO: randomize string based on length and criteria
-  let randomizedString;
+  let randomizedStr;
   for (let i=0;i<length;i++){
     let rChar = getRandomNum();
     console.log(rChar);
-    randomizedString += getASCII(rChar); 
-    console.log(randomizedString);
+    randomizedStr += getASCII(rChar); 
+    console.log(randomizedStr);
   }
-  return randomizedString;
+  return randomizedStr;
 }
 
 function chooseType(){
