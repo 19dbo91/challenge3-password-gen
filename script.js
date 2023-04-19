@@ -29,7 +29,6 @@ const maxCharLen = 128;
 function CharType(newType, newRange){
   this.type = newType; // expecting STRING for name of character type
   this.range=newRange; // expecting min and max INTEGERS, or list of ranges for ascii
-  this.isActive=false; // user will affect this at runtime
 };
 
 let selectedTypes, charTypes=[];
@@ -63,7 +62,7 @@ function getPasswordLength(){
 }
 
 function setPasswordCriteria(){
-  selectedTypes=[];//resets on click
+  selectedTypes=[]; //resets on click
   charTypes.forEach(element => {
     if (confirm(`${askInclusion} ${element.type}`)){
       selectedTypes.push(element);
@@ -74,15 +73,6 @@ function setPasswordCriteria(){
   }
 }
 
-function wasTypeChosen(){
-  let chosenOne;
-  for (let i = 0; i < charTypes.length ; i++){
-    chosenOne = chosenOne || charTypes[i].isActive;  
-    //console.log(chosenOne); // ! debug: omit on live
-  }
-  return chosenOne;
-}// returns false if all criteria skipped;
-
 /* Wrapped functions for easier read */
 function getRandomNum(min,maxExcluded){
   return Math.floor(Math.random()*(maxExcluded-min) + min); // !Reminder: Random()=> [0,1); in other words 1 is excluded
@@ -91,20 +81,37 @@ function getASCII(number){
   return String.fromCharCode(number); // .charCodeAt is the inverse
 }
 
-function getRandomPassword(length){ // TODO: randomize string based on length and criteria
-  let randomizedStr;
-  for (let i=0;i<length;i++){
-    let rChar = getRandomNum();
-    console.log(rChar);
-    randomizedStr += getASCII(rChar); 
-    console.log(randomizedStr);
+function chooseType(arrayOfTypes){
+  let num = getRandomNum(0,arrayOfTypes.length);
+  console.log(arrayOfTypes[num].type);
+  return arrayOfTypes[num];
+} //returns Type object from array
+
+function chooseChar(chosenType){
+  
+  if (chooseType.type!="Special Characters"){
+    let min = chosenType.range[0];
+    let max = chosenType.range[1];
+    return getRandomNum(min,max);
+  }else{
+    console.log(getRandomNum(0, chosenType.range.length));
   }
-  return randomizedStr;
 }
 
-function chooseType(){
+function getRandomPassword(length){ // TODO: randomize string based on length and criteria
+  let randomizedPassword="";
+  for(let i = 0;i<length;i++){
+    console.log(selectedTypes);
+    let randNumASCII = chooseChar(chooseType(selectedTypes)); console.log(randNumASCII);
+    let randCharASCII= getASCII(randNumASCII); console.log(randCharASCII);
+    randomizedPassword += randCharASCII;
+    console.log(randomizedPassword);
+  }
+
+  return randomizedPassword;
 }
-function chooseChar(){}
+
+
 
 /* Backlog of Acceptance Criteria
 * WHEN all prompts are answered
