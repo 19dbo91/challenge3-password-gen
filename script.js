@@ -24,7 +24,7 @@ alertMsg[2]="Length is out of bounds. You have entered a length of";
 
 const minCharLen = 8;
 const maxCharLen = 128;
-let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"];
+let charTypes=["Lower Case", "Upper Case", "Numbers", "Special Characters"]; //TODO: switch to an array of objects? object w/ type,response,range
 let responseCharTypes=[]; //stores user input for including character type
 
 //let lowercase, uppercase, numbers, specials;
