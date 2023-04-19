@@ -37,7 +37,7 @@ A password will be displayed in an alert or written to the page.
 - Copy and store the password somewhere safe
 
 Preview:
-![alt text](assets/images/screenshot.png)
+![preview of password generator with button](assets/images/preview.png)
 
 ## Credits
 
