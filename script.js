@@ -26,6 +26,7 @@ alertMsg[2]="Length is out of bounds. You have entered a length of";
 /* Password Length */
 const minCharLen = 8;
 const maxCharLen = 128;
+const numRegex=/[\D]/g;
 
 /* Class: CharacterType */
 class CharType {
@@ -50,6 +51,7 @@ function generatePassword() {
 
 function getPasswordLength(){ 
   let length = prompt(askPasswordLength, minCharLen);
+  length = length.replace(numRegex,""); // cleans input of nonnumberical values console.log(length);
   if (length < minCharLen || length > maxCharLen){    
     alert(`${alertMsg[2]} ${length}.\n${alertMsg[0]}`);
     return;
